@@ -33,8 +33,8 @@ if(!UserName){
 		  
 		fetch(`https://instagram47.p.rapidapi.com/get_user_id?username=${UserName}`, options)
 		.then(response => {
-		  if (!response.ok) {
-			throw new Error(`Error: ${response.status} ${response.statusText}`);
+		  if (!response.ok && response.status == 429) {
+			throw new Error(`api queries per hour exceeded`);
 		  }
 		  return response.json();
 		})
@@ -45,7 +45,7 @@ if(!UserName){
 		})
 		.catch(error => {
 		  const errorMessage = document.getElementById("parrafo-resultado");
-		  errorMessage.textContent = `Ocurrió un error: ${error.message}`;
+		  errorMessage.textContent = `${error}`;
 		  result.appendChild(errorMessage);
 		});
 					
