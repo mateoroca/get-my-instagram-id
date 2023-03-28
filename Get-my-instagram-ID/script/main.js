@@ -30,22 +30,24 @@ if(!UserName){
 }
 
 	else{
-		
-		fetch(`https://instagram47.p.rapidapi.com/get_user_id?username=${UserName}`,options)
-		.then(response => response.json())
-		.then( data => { 
-			const resulID = document.getElementById("parrafo-resultado")
-			resulID.innerHTML = `Su Id es: ${data.user_id}`
-			result.appendChild(resulID)
+		  
+		fetch(`https://instagram47.p.rapidapi.com/get_user_id?username=${UserName}`, options)
+		.then(response => {
+		  if (!response.ok) {
+			throw new Error(`Error: ${response.status} ${response.statusText}`);
+		  }
+		  return response.json();
 		})
- 
-		.catch(err => {
-			console.log(err)
-			document.getElementById("parrafo-resultado").innerHTML = `<p>${err}</p>`
+		.then(data => {
+		  const resulID = document.getElementById("parrafo-resultado");
+		  resulID.innerHTML = `Su Id es: ${data.user_id}`;
+		  result.appendChild(resulID);
 		})
-
-		
-					
+		.catch(error => {
+		  const errorMessage = document.getElementById("parrafo-resultado");
+		  errorMessage.textContent = `Ocurrió un error: ${error.message}`;
+		  result.appendChild(errorMessage);
+		});
 					
 	 }
 });
