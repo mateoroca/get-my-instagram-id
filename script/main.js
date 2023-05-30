@@ -19,9 +19,7 @@ miBoton.addEventListener("click", async function (event) {
   };
 
   if (!UserName) {
-    const resulID = document.querySelector("#parrafo-resultado");
-    resulID.innerHTML = `error : empty input`;
-    result.appendChild(resulID);
+    show("", "error: ", "empty input");
   } else {
     try {
       const response = await axios.request(options);
@@ -30,24 +28,24 @@ miBoton.addEventListener("click", async function (event) {
         throw new Error(`api queries per hour exceeded`);
       }
       if (response.data.status == 400) {
-        const resulID = document.querySelector("#parrafo-resultado");
-        resulID.innerHTML = `error : private profile`;
-        result.appendChild(resulID);
+        show("", "error: ", "typing error");
       } else {
         console.log(response.data);
-        showData(response);
+        show(response, "its id is :");
       }
     } catch (error) {
-      const errorMessage = document.getElementById("parrafo-resultado");
-      errorMessage.textContent = `${error}`;
-      result.appendChild(errorMessage);
+      show("", "error: ", error);
     }
   }
 });
 
-function showData(res) {
+function show(...data) {
   const resulID = document.getElementById("parrafo-resultado");
-  resulID.innerHTML = `Su Id es: ${res.data.id}`;
+  if (data[0]) {
+    resulID.innerHTML = `${data[1]} ${data[0].data.id}`;
+  } else {
+    resulID.innerHTML = `${data[1]} ${data[2]}`;
+  }
   result.appendChild(resulID);
 }
 
